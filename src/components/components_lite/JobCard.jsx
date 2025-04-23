@@ -1,26 +1,27 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import companyLogo from "../../assets/react.svg"
+
+// Define a list of Tailwind text colors
+const colors = ["text-red-500", "text-blue-500", "text-green-500", "text-yellow-500", "text-purple-500", "text-pink-500"];
+const getRandomColor = () => colors[Math.floor(Math.random() * colors.length)];
 
 const JobCard = ({
+    companyLogo,
     companyName,
     jobTitle,
-    location,
+    jobGeo,
     jobType,
-    skills,
     applyLink,
-  }) => {
+}) => {
+    // Select a random color when component renders
+    const randomColor = getRandomColor();
+
     return (
-      <Card className="w-full max-w-md mx-auto">
+      <Card className="w-[400px] max-w-md mx-auto">
         <CardHeader className="flex flex-row items-center space-x-4 pb-4">
-          <img
-            src={companyLogo || "/placeholder.svg"}
-            alt={`${companyName} logo`}
-            width={64}
-            height={64}
-            className="rounded-full"
-          />
+          <div className={`w-[30px] h-[30px] flex items-center justify-center font-black text-[45px] ${randomColor}`}>
+            {companyName[0]}
+          </div>
           <div>
             <h2 className="text-2xl font-bold">{companyName}</h2>
             <p className="text-sm text-muted-foreground">{jobTitle}</p>
@@ -28,18 +29,8 @@ const JobCard = ({
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="flex justify-between text-sm text-muted-foreground">
-            <span>{location}</span>
-            <span>{jobType}</span>
-          </div>
-          <div>
-            <h3 className="font-semibold mb-2">Required Skills:</h3>
-            <div className="flex flex-wrap gap-2">
-              {skills.map((skill, index) => (
-                <Badge key={index} variant="secondary">
-                  {skill}
-                </Badge>
-              ))}
-            </div>
+            <span>{jobGeo}</span>
+            <span>{jobType[0]}</span>
           </div>
         </CardContent>
         <CardFooter>
@@ -51,6 +42,6 @@ const JobCard = ({
         </CardFooter>
       </Card>
     );
-  };  
+};
 
-export default JobCard
+export default JobCard;

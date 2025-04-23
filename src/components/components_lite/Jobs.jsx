@@ -1,104 +1,54 @@
-import React, { useState } from "react";
-import JobCard  from "./JobCard";
+import React, { useContext, useState } from "react";
+import JobCard from "./JobCard";
+import { GlobalContext } from "../../context/globalcontext";
+import { Search } from "lucide-react";
 
 const Jobs = () => {
-  // Sample job data
-  const [sampleJobs, setSampleJobs] = useState([
-    {
-      title: "Frontend Developer",
-      description: "Proficient in React, JavaScript, and CSS.",
-      location: "Remote",
-    },
-    {
-      title: "Backend Developer",
-      description: "Expertise in Node.js, MongoDB, and REST APIs.",
-      location: "Austin, TX",
-    },
-    {
-      title: "Data Scientist",
-      description: "Skilled in Python, TensorFlow, and Machine Learning.",
-      location: "New York, NY",
-    },
-  ]);
+  const { jobs, searchQuery } = useContext(GlobalContext);
+
+  const filteredJobs = searchQuery.trim() === "" 
+    ? jobs 
+    : jobs.filter(job => 
+        job.jobTitle.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        job.companyName.toLowerCase().includes(searchQuery.toLowerCase())
+      );
 
   return (
-    /*<div className="jobs-page">
-      <h1 className="text-2xl font-bold text-center my-4">Job Listings</h1>
-      <p className="text-center text-gray-600 mb-6">Browse the latest job opportunities!</p>
-      
-      <div className="job-listings grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-        {sampleJobs.map((job, index) => (
-          <div
-            key={index}
-            className="job-card border rounded-lg shadow-md p-4 hover:shadow-lg transition"
-          >
-            <h2 className="text-lg font-semibold">{job.title}</h2>
-            <p>{job.description}</p>
-            <p className="text-sm text-gray-500">
-              <strong>Location:</strong> {job.location}
-            </p>
-          </div>
-        ))}
-      </div>
-    </div>*/
-
-    <div className="p-4">
-      <JobCard
-        companyName="TechCorp"
-        companyLogo="/placeholder.svg?height=64&width=64"
-        jobTitle="Senior Frontend Developer"
-        location="San Francisco, CA"
-        jobType="Full-time"
-        skills={["React", "TypeScript", "Next.js", "Tailwind CSS"]}
-        applyLink="https://example.com/apply"
-      />
-    </div>
-
-
+    <>
+      {jobs.length > 0 ? (
+        <div className="p-4">
+          {filteredJobs.length > 0 ? (
+            <div className="flex flex-wrap gap-2 gap-y-5">
+              {filteredJobs.map((job, index) => (
+                <JobCard
+                  key={index}
+                  companyLogo={job.companyName[0]}
+                  companyName={job.companyName}
+                  jobTitle={job.jobTitle}
+                  jobGeo={job.jobGeo}
+                  jobType={job.jobType}
+                  applyLink={job.url}
+                />
+              ))}
+            </div>
+          ) : (
+            <div className="flex flex-col items-center justify-center py-10">
+              <Search className="h-16 w-16 text-gray-400 mb-4" />
+              <h3 className="text-xl font-semibold text-gray-700 mb-2">No jobs found</h3>
+              <p className="text-gray-500 text-center">
+                We couldn't find any jobs matching "{searchQuery}".<br />
+                Try adjusting your search or check back later for new opportunities.
+              </p>
+            </div>
+          )}
+        </div>
+      ) : (
+        <div className="flex items-center justify-center py-10">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900"></div>
+        </div>
+      )}
+    </>
   );
 };
 
 export default Jobs;
-
-
-
-// import React from "react";
-// import Navbar from "./Navbar";
-// import FilterCard from "./Filtercard";
-// import Job1 from "./Job1";
-// import { useSelector } from "react-redux";
-
-// // const jobsArray = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 ];
-
-// const Jobs = () => {
-//   const { allJobs } = useSelector((store) => store.job);
-
-//   return (
-//     <div>
-//       <Navbar />
-
-//       <div className="max-w-7xl mx-auto mt-5 ">
-//         <div className="flex gap-5">
-//           <div className="w-20% ">
-//             <FilterCard />
-//           </div>
-//           {allJobs.length <= 0 ? (
-//             <span className="">Job not found</span>
-//           ) : (
-//             <div className="flex-1 h-[88vh] overflow-y-auto pb-5">
-//               <div className="grid grid-cols-3 gap-4">
-//                 {allJobs.map((job) => (
-//                   <div key={job.id}>
-//                     <Job1 job={job} />
-//                   </div>
-//                 ))}
-//               </div>
-//             </div>
-//           )}
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default Jobs;

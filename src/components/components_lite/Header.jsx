@@ -1,9 +1,32 @@
-import React from "react";
+import React, { useContext, useState } from "react";
 import { Button } from "../ui/button";
 import { Search } from "lucide-react";
 import { PiBuildingOfficeBold } from "react-icons/pi";
+import { GlobalContext } from "../../context/globalcontext";
 
 const Header = () => {
+  const { setSearchQuery } = useContext(GlobalContext);
+  const [localSearchQuery, setLocalSearchQuery] = useState("");
+
+  const handleSearch = () => {
+    setSearchQuery(localSearchQuery.trim());
+  };
+
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      handleSearch();
+    }
+  };
+
+  const handleInputChange = (e) => {
+    const value = e.target.value;
+    setLocalSearchQuery(value);
+    // Update global search query immediately when input is cleared
+    if (value.trim() === "") {
+      setSearchQuery("");
+    }
+  };
+
   return (
     <div>
       <div className="text-center">
@@ -30,8 +53,11 @@ const Header = () => {
               type="text"
               placeholder="Find Your Dream Job"
               className="outline-none border-none w-full"
+              value={localSearchQuery}
+              onChange={handleInputChange}
+              onKeyPress={handleKeyPress}
             />
-            <Button className=" rounded-r-full">
+            <Button className="rounded-r-full" onClick={handleSearch}>
               <Search className="h-5 w-5" />
             </Button>
           </div>
