@@ -1,4 +1,4 @@
-import GlobalContextData from './context/GlobalContextData';
+import GlobalContextData from './context/globalcontext.jsx';
 import React from "react";
 import Navbar from "./components/components_lite/Navbar";
 import Login from "./components/authentication/Login";
@@ -73,8 +73,6 @@ const appRouter = createBrowserRouter([
 function App() {
   return (
     <div><GlobalContextData>
-    
-  
       <RouterProvider router={appRouter}></RouterProvider>
     </GlobalContextData>
     </div>
