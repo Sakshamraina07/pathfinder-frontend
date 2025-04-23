@@ -1,4 +1,4 @@
-import GlobalContextData from './Context/GlobalContext';
+import GlobalContextData from './context/GlobalContextData';
 import React from "react";
 import Navbar from "./components/components_lite/Navbar";
 import Login from "./components/authentication/Login";
